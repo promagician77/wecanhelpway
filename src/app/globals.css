@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   WeCanHelpWay — calm design tokens
+
+   Many people arrive here in a hard moment: out of work, short of money,
+   or pushing hard toward something. The interface should feel like a quiet,
+   sunlit room — warm paper, soft ink, one gentle sage accent, generous space,
+   slow motion. Nothing that shouts, flashes or hurries.
+   ========================================================================== */
+@theme {
+  /* Page ground (warm paper). Named `void` for historical reasons. */
+  --color-void: #f7f5f0;
+  --color-paper: #f7f5f0;
+  --color-sand: #efebe3;
+  --color-snow: #ffffff;
+  --color-slate-deep: #ffffff;
+
+  /* Text. Most UI uses `ink` with opacity: ink/90 body, ink/60 muted, ink/40 faint. */
+  --color-ink: #2b2a27;
+
+  /* Sage — the single accent: growth, calm, safety. */
+  --color-brand-50: #f1f6f2;
+  --color-brand-100: #e2ede5;
+  --color-brand-200: #c5dacc;
+  --color-brand-300: #9fc0aa;
+  --color-brand-400: #77a386;
+  --color-brand-500: #5b8b6c;
+  --color-brand-600: #497458;
+  --color-brand-700: #3b5e47;
+  --color-brand-800: #304c3a;
+  --color-brand-900: #273e30;
+
+  /* Soft sky — a quiet companion colour. */
+  --color-aqua-300: #d4e4ef;
+  --color-aqua-400: #aecbdf;
+  --color-aqua-500: #84abc7;
+  --color-aqua-600: #5f88a8;
+
+  /* Warm sand/peach — for small moments of warmth. */
+  --color-magenta-400: #f1cdb2;
+  --color-magenta-500: #e3ad86;
+  --color-lime-400: #b8cf8a;
+
+  /* Status colours, deliberately muted so nothing alarms. */
+  --color-positive: #3f8f5c;
+  --color-caution: #b7801f;
+  --color-critical: #b85a44;
+  --color-live: #b85a44;
+
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-display: var(--font-display), Georgia, serif;
+
+  --radius-2xs: 8px;
+  --radius-xs: 12px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 26px;
+  --radius-xl: 34px;
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-marquee: marquee 80s linear infinite;
+  --animate-kenburns: drift 60s ease-in-out infinite alternate;
+  --animate-breathe: breathe 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+/* A barely-there drift, like light moving across a window. */
+@keyframes drift {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  100% { transform: scale(1.07) translate3d(-1%, -0.5%, 0); }
+}
+/* Slow in-and-out, paced like a calm breath. */
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.12); }
+}
+@keyframes spinner-blade {
+  0%   { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+@keyframes sheen {
+  0%   { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes border-travel {
+  to { --angle: 360deg; }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+:root {
+  color-scheme: light;
+}
+
+* { border-color: rgb(43 42 39 / 0.09); }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Morning light: a faint warm glow top-left, a faint green one top-right. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(900px 500px at 8% -10%, rgb(241 205 178 / 0.28), transparent 70%),
+    radial-gradient(800px 480px at 95% -8%, rgb(197 218 204 / 0.35), transparent 70%),
+    var(--color-paper);
+}
+
+::selection {
+  background: rgb(159 192 170 / 0.5);
+  color: var(--color-ink);
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgb(43 42 39 / 0.14);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(43 42 39 / 0.26);
+  background-clip: content-box;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   Surfaces
+   ========================================================================== */
+
+/* A white card resting on paper. */
+@utility material {
+  background: #ffffff;
+  border: 1px solid rgb(43 42 39 / 0.07);
+  box-shadow:
+    0 1px 2px 0 rgb(43 42 39 / 0.04),
+    0 10px 30px -14px rgb(43 42 39 / 0.12);
+}
+
+/* Frosted white over photography. */
+@utility glass {
+  background: rgb(255 255 255 / 0.72);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgb(255 255 255 / 0.8);
+  box-shadow: 0 8px 30px -12px rgb(43 42 39 / 0.18);
+}
+
+@utility glass-strong {
+  background: rgb(255 255 255 / 0.9);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid rgb(43 42 39 / 0.07);
+  box-shadow:
+    0 1px 2px 0 rgb(43 42 39 / 0.04),
+    0 20px 50px -20px rgb(43 42 39 / 0.22);
+}
+
+/* Soft field for inputs and tracks. */
+@utility well {
+  background: #ffffff;
+  border: 1px solid rgb(43 42 39 / 0.12);
+  box-shadow: inset 0 1px 2px 0 rgb(43 42 39 / 0.04);
+}
+
+/* Primary action: calm sage, softly raised. */
+@utility skin-chrome {
+  color: #ffffff;
+  background: var(--color-brand-600);
+  border: 1px solid var(--color-brand-600);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.14),
+    0 1px 2px 0 rgb(43 42 39 / 0.08),
+    0 8px 20px -10px rgb(73 116 88 / 0.55);
+}
+
+@utility skin-accent {
+  color: #ffffff;
+  background: var(--color-brand-500);
+  border: 1px solid var(--color-brand-500);
+  box-shadow: 0 6px 16px -8px rgb(73 116 88 / 0.5);
+}
+
+@utility skin-danger {
+  color: #ffffff;
+  background: var(--color-critical);
+  border: 1px solid var(--color-critical);
+  box-shadow: 0 6px 16px -8px rgb(184 90 68 / 0.45);
+}
+
+@utility skin-success {
+  color: #ffffff;
+  background: var(--color-positive);
+  border: 1px solid var(--color-positive);
+  box-shadow: 0 6px 16px -8px rgb(63 143 92 / 0.45);
+}
+
+/* Emphasis in headlines: a quiet sage, not a gradient. */
+@utility text-gradient {
+  color: var(--color-brand-600);
+}
+
+@utility text-gradient-brand {
+  color: var(--color-brand-600);
+}
+
+@utility grid-backdrop {
+  background-image: radial-gradient(rgb(43 42 39 / 0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@utility fade-edges-y {
+  mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
